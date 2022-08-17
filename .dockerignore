@@ -1,0 +1,10 @@
+node_modules
+Dockerfile
+.dockerignore
+.git
+.gitignore
+.idea
+logs
+README.md
+.eslintrc.json
+CHANGELOG.md

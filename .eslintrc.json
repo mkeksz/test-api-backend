@@ -1,0 +1,36 @@
+{
+  "env": {
+    "node": true,
+    "commonjs": true,
+    "es2022": true,
+    "jest": true
+  },
+  "extends": ["eslint:recommended", "plugin:security/recommended"],
+  "parserOptions": {
+    "ecmaVersion": 13
+  },
+  "rules": {
+    "quotes": ["warn", "single"],
+    "semi": ["warn", "never"],
+    "no-console": "warn",
+    "no-use-before-define": ["error", {"functions": false}],
+    "no-shadow": "error",
+    "no-param-reassign": "error",
+    "no-unused-vars": "warn",
+    "comma-dangle": ["warn", "never"],
+    "block-spacing": ["warn", "never"],
+    "space-before-blocks": ["warn", "always"],
+    "brace-style": ["warn", "1tbs"],
+    "no-whitespace-before-property": "warn",
+    "space-before-function-paren": ["warn", {"anonymous": "always", "named": "never"}],
+    "space-in-parens": ["warn", "never"],
+    "array-bracket-spacing": ["warn", "never"],
+    "computed-property-spacing": ["warn", "never"],
+    "object-curly-spacing": ["warn", "never"],
+    "comma-spacing": "warn",
+    "max-len": ["warn", {"code": 100}],
+    "arrow-body-style": ["warn", "as-needed"],
+    "arrow-parens": ["warn", "as-needed"],
+    "arrow-spacing": ["warn", {"before": true, "after": true}]
+  }
+}
