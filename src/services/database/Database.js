@@ -14,7 +14,7 @@ class Database {
             logger.info(`Connecting to ${this.name}...`)
             this.connection = await mongoose.createConnection(this.uri).asPromise()
             logger.info(`Connected to ${this.name}`)
-            this._setEventHandlersToConnection()
+            this.#setEventHandlersToConnection()
         } catch (error) {
             logger.error(`${error.message}`)
             throw error
@@ -31,7 +31,7 @@ class Database {
         }
     }
 
-    _setEventHandlersToConnection() {
+    #setEventHandlersToConnection() {
         this.connection.on('disconnected', () => logger.info(`Disconnected from ${this.name}`))
         this.connection.on('close', () => logger.info(`Closed connection to ${this.name}`))
         this.connection.on('reconnected', () => logger.info(`Reconnected to ${this.name}`))

@@ -14,31 +14,31 @@ class Logger {
 
     init(context) {
         this.context = context
-        this.combinedLogger.info(this._formatMessage('started'))
+        this.combinedLogger.info(this.#formatMessage('started'))
     }
 
     info(message) {
-        this.combinedLogger.info(this._formatMessage(message))
+        this.combinedLogger.info(this.#formatMessage(message))
     }
 
     warn(message) {
-        this.combinedLogger.warn(this._formatMessage(message))
+        this.combinedLogger.warn(this.#formatMessage(message))
     }
 
     error(message) {
-        this.combinedLogger.error(this._formatMessage(message))
-        this.errorLogger.error(this._formatMessage(message))
+        this.combinedLogger.error(this.#formatMessage(message))
+        this.errorLogger.error(this.#formatMessage(message))
     }
 
     debug(message) {
-        if (config.DEBUG) this.combinedLogger.debug(this._formatMessage(message))
+        if (config.DEBUG) this.combinedLogger.debug(this.#formatMessage(message))
     }
 
     success() {
-        this.combinedLogger.info(this._formatMessage('succeed'))
+        this.combinedLogger.info(this.#formatMessage('succeed'))
     }
 
-    _formatMessage(message) {
+    #formatMessage(message) {
         const reqMethod = httpContext.get('method')
         const reqPath = httpContext.get('path')
 

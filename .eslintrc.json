@@ -31,6 +31,9 @@
     "max-len": ["warn", {"code": 100}],
     "arrow-body-style": ["warn", "as-needed"],
     "arrow-parens": ["warn", "as-needed"],
-    "arrow-spacing": ["warn", {"before": true, "after": true}]
+    "arrow-spacing": ["warn", {"before": true, "after": true}],
+    "prefer-template": "warn",
+    "template-curly-spacing": ["warn", "never"],
+    "space-infix-ops": "warn"
   }
 }

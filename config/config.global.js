@@ -29,12 +29,16 @@ config.CORS = {
 }
 
 config.JWT = {
-    SECRET_KEY: '',
-    VERIFY: {},
+    SECRET_KEY: 'secret-key',
+    TTL: '1d',
     SIGN: {
-        ISSUER: 'Test Backend Application',
-        AUDIENCE: ''
+        ISSUER: 'Test Backend Application'
     }
+}
+
+config.AUTH = {
+    USERNAME: 'admin',
+    PASSWORD: '1234'
 }
 
 module.exports = config
