@@ -5,7 +5,7 @@ const config = {}
 config.PORT = 3000
 config.PREFIX = 'v1'
 config.URL = 'http://localhost:3000'
-config.DB_URL = 'mongodb://localhost:27017/test_db'
+config.DB_URL = 'mongodb://localhost:27017/test'
 
 config.ENV = {
     DEV: process.env.NODE_ENV === 'dev',

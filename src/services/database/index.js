@@ -4,8 +4,8 @@ const {DB_URL} = require('../../config')
 class TestDatabase extends Database {
     constructor(uri) {
         super(uri)
-        this.name = 'test_db'
+        this.name = 'test'
     }
 }
 
-module.exports = {testDatabase: new TestDatabase(DB_URL)}
+module.exports = {testDB: new TestDatabase(DB_URL)}

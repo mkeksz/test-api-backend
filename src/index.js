@@ -1,14 +1,14 @@
 const {startServer} = require('./server')
 const logger = require('./services/logger')(module)
-const {testDatabase} = require('./services/database')
+const {testDB} = require('./services/database')
 
-testDatabase.connect().then(startServer)
+testDB.connect().then(startServer)
 
 const signals = ['SIGINT', 'SIGTERM', 'SIGQUIT']
 signals.forEach(signal =>
     process.on(signal, async () => {
         logger.info(`Caught signal ${signal}`)
-        await testDatabase.disconnect()
+        await testDB.disconnect()
         process.exit(0)
     })
 )
