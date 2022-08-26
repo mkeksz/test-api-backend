@@ -4,8 +4,8 @@ const log4js = require('log4js')
 function configureLogger() {
     const config = {
         appenders: {
-            error: {type: 'file', filename: LOG.ERROR_FILE},
-            combined: {type: 'file', filename: LOG.COMBINED_FILE}
+            error: {type: 'file', filename: LOG.ERROR_FILE, maxLogSize: '10M'},
+            combined: {type: 'file', filename: LOG.COMBINED_FILE, maxLogSize: '10M'}
         },
         categories: {
             error: {appenders: ['error'], level: 'ERROR'},
