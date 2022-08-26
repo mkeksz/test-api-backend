@@ -1,6 +1,5 @@
 const {Schema, Types} = require('mongoose')
 const Contract = require('../../schemas/contract')
-const Photo = require('../../schemas/photo')
 
 module.exports = new Schema(
     {
@@ -11,8 +10,7 @@ module.exports = new Schema(
         contract: Contract,
         type: [String],
         status: {type: String, default: 'active'},
-        contact: [Types.ObjectId],
-        photos: [Photo]
+        contact: [{type: Types.ObjectId, ref: 'Contact'}]
     },
     {timestamps: true}
 )
