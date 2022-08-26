@@ -7,7 +7,9 @@ const router = Router()
 
 router.use(onlyAuthorized)
 
-router.get('/', (req, res) => res.send('Hello World!'))
+router.get(':id', (req, res) => res.send('Hello World!'))
+router.put(':id', (req, res) => res.send('Hello World!'))
+router.delete(':id', (req, res) => res.send('Hello World!'))
 router.post('', ...validator, post)
 
 module.exports = router

@@ -7,7 +7,7 @@ const {PREFIX} = require('../../config')
 const {AUTH} = require('../../config')
 
 const query = `?username=${AUTH.USERNAME}&password=${AUTH.PASSWORD}`
-const authPath = `/${PREFIX}/${AUTH_PATH}`
+const authPath = `/${PREFIX}${AUTH_PATH}`
 const authPathWithQuery = `${authPath}${query}`
 
 describe(`GET ${AUTH_PATH}`, () => {
