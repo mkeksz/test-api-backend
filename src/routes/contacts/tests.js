@@ -1,33 +1,41 @@
 const {PREFIX} = require('../../config')
 const {CONTACTS_PATH} = require('../constants')
 const onlyAuthorized = require('../../middleware/onlyAuthorized')
-const {OK, BAD_REQUEST} = require('../../constants/httpCodes')
+const {OK, BAD_REQUEST, NOT_FOUND} = require('../../constants/httpCodes')
 const errors = require('../../constants/errors')
 const request = require('supertest')
 const {app} = require('../../app')
 const {testDB} = require('../../services/database')
 const {contact} = require('./tests.data')
 const validatorErrors = require('./validator.errors')
+const testDBConnection = require('../../mongo/testDB')
+const {getMongoIDError} = require('../../middleware/isMongoID')
 
-const contactsPath = `/${PREFIX}${CONTACTS_PATH}`
+const postContactsPath = `/${PREFIX}${CONTACTS_PATH}`
+const getContactsPath = `${postContactsPath}/`
 
 jest.mock('../../middleware/onlyAuthorized')
 
-describe(`POST ${CONTACTS_PATH}`, () => {
-    beforeAll(async () => {
-        onlyAuthorized.mockImplementation((req, res, next) => next())
-        await testDB.connect()
-    })
+beforeAll(async () => {
+    await testDB.connect()
+    onlyAuthorized.mockImplementation((req, res, next) => next())
+})
 
+afterAll(async () => {
+    jest.resetAllMocks()
+    await testDB.disconnect()
+})
+
+describe(`POST ${CONTACTS_PATH}`, () => {
     afterAll(async () => {
-        jest.resetAllMocks()
-        await testDB.disconnect()
+        const {Contact} = testDBConnection().models
+        await Contact.deleteMany()
     })
 
     describe('success', () => {
         let status, body
         beforeAll(async () => {
-            const result = await request(app).post(contactsPath).send(contact)
+            const result = await request(app).post(postContactsPath).send(contact)
             status = result.status
             body = result.body
         })
@@ -45,7 +53,7 @@ describe(`POST ${CONTACTS_PATH}`, () => {
         const badRequestCode = errors.BAD_REQUEST.code
         let _request
         beforeEach(() => {
-            _request = request(app).post(contactsPath)
+            _request = request(app).post(postContactsPath)
         })
 
         test('should return BAD_REQUEST if firstname is empty', async () => {
@@ -95,6 +103,51 @@ describe(`POST ${CONTACTS_PATH}`, () => {
             expect(status).toBe(BAD_REQUEST)
             expect(body)
                 .toEqual({...validatorErrors.EMAIL_INVALID, code: badRequestCode})
+        })
+    })
+})
+
+describe(`GET ${CONTACTS_PATH}/:id`, () => {
+    let contactID
+    beforeAll(async () => {
+        const {Contact} = testDBConnection().models
+        const contactDB = await Contact.insertMany([contact])
+        contactID = contactDB[0]._id.toString()
+    })
+
+    afterAll(async () => {
+        const {Contact} = testDBConnection().models
+        await Contact.deleteMany()
+    })
+
+    describe('success', () => {
+        let status, body
+        beforeAll(async () => {
+            const result = await request(app).get(`${getContactsPath}${contactID}`)
+            status = result.status
+            body = result.body
+        })
+
+        test('should return OK', () => {
+            expect(status).toBe(OK)
+        })
+        test('should return contact object', () => {
+            expect(body).toEqual({...contact, id: contactID})
+        })
+    })
+
+    describe('error', () => {
+        test('should return BAD_REQUEST if id is not mongoID', async () => {
+            const {status, body} = await request(app).get(`${getContactsPath}1234`)
+            expect(status).toBe(BAD_REQUEST)
+            expect(body).toEqual(getMongoIDError('id'))
+        })
+
+        test('should return NOT_FOUND if contact is not found', async () => {
+            const fakeID = '630914329011e211ca989670'
+            const {status, body} = await request(app).get(`${getContactsPath}${fakeID}`)
+            expect(status).toBe(NOT_FOUND)
+            expect(body).toEqual({code: errors.NOT_FOUND.code, error: errors.NOT_FOUND.message})
         })
     })
 })
